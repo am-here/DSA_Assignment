@@ -12,14 +12,11 @@ void swap();
 void bubble_sort();
 void selection_sort();
 void insertion_sort();
+void merge();
 void merge_sort();
 void quick_sort();
 void display();
 
-void input(int A[], int n)
-{
-    int i;
-}
 void swap(int *a, int *b)
 {
     int x = *a, y = *b;
@@ -75,6 +72,35 @@ void insertion_sort(int A[], int n)
         A[pos + 1] = val;
     }
 }
+void merge(int A[], int l, int mid, int r)
+{
+    int x = l;
+    int M[100];
+    int i = l, j = mid + 1, k = l;
+    while (i <= mid && j <= r)
+        if (A[i] < A[j])
+            M[k++] = A[i++];
+        else
+            M[k++] = A[j++];
+    while (i <= mid)
+        M[k++] = A[i++];
+    while (j <= r)
+        M[k++] = A[j++];
+    for (; x <= r; x++)
+        A[x] = M[x];
+}
+void mergeSort(int A[], int l, int r)
+{
+    int mid;
+    if (l < r)
+    {
+        mid = (l + r) / 2;
+        mergeSort(A, l, mid);
+        mergeSort(A, mid + 1, r);
+        merge(A, l, mid, r);
+    }
+    return;
+}
 void display(int A[], int n)
 {
     int i;
@@ -88,7 +114,7 @@ int main()
     int n, i, ch;
     do
     {
-        printf("1. Bubble Sort\n2. Selection Sort\n3. Insertion Sort\n4. Merge Sort\n5. Quick Sort\nEnter your Choice\n");
+        printf("1. Bubble Sort\n2. Selection Sort\n3. Insertion Sort\n4. Merge Sort\n5. Quick Sort\nEnter your Choice: ");
         scanf("%d", &ch);
         printf("Enter size of the Array: ");
         scanf("%d", &n);
@@ -106,6 +132,8 @@ int main()
         case 3:
             insertion_sort(A, n);
             break;
+        case 4:
+            mergeSort(A, 0, n - 1);
         default:
             break;
         }
