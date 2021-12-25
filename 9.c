@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 void swap();
 void bubble_sort();
@@ -14,6 +15,8 @@ void selection_sort();
 void insertion_sort();
 void merge();
 void merge_sort();
+int random();
+int partition();
 void quick_sort();
 void display();
 
@@ -101,6 +104,37 @@ void mergeSort(int A[], int l, int r)
     }
     return;
 }
+int random(int l, int r)
+{
+    return rand() % (r - l + 1) + l;
+}
+int partition(int A[], int l, int r)
+{
+    int ind = random(l, r);
+    int pivot = A[ind];
+    swap(&A[ind], &A[r]);
+    int i = l - 1;
+    for (int j = l; j < r; j++)
+    {
+        if (A[j] < pivot)
+        {
+            i++;
+            swap(&A[i], &A[j]);
+        }
+    }
+    swap(&A[i + 1], &A[r]);
+    return (i + 1);
+}
+void quick_sort(int A[], int l, int r)
+{
+    if (l < r)
+    {
+        int x = partition(A, l, r);
+        quick_sort(A, l, x - 1);
+        quick_sort(A, x + 1, r);
+    }
+    return;
+}
 void display(int A[], int n)
 {
     int i;
@@ -118,6 +152,12 @@ int main()
         scanf("%d", &ch);
         printf("Enter size of the Array: ");
         scanf("%d", &n);
+        while (n >= 99)
+        {
+            printf("Invalid Input! Try again\n");
+            printf("Enter size of the Array: ");
+            scanf("%d", &n);
+        }
         printf("Please Intialize the array: ");
         for (i = 0; i < n; i++)
             scanf("%d", &A[i]);
@@ -134,6 +174,8 @@ int main()
             break;
         case 4:
             mergeSort(A, 0, n - 1);
+        case 5:
+            quick_sort(A, 0, n - 1);
         default:
             break;
         }
