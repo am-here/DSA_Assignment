@@ -113,17 +113,18 @@ int partition(int A[], int l, int r)
     int ind = random(l, r);
     int pivot = A[ind];
     swap(&A[ind], &A[r]);
-    int i = l - 1;
-    for (int j = l; j < r; j++)
+    int i = l - 1, j = r;
+    while (i <= j)
     {
-        if (A[j] < pivot)
-        {
-            i++;
+        while (A[++i] < pivot)
+            ;
+        while (A[--j] > pivot)
+            ;
+        if (i < j)
             swap(&A[i], &A[j]);
-        }
     }
-    swap(&A[i + 1], &A[r]);
-    return (i + 1);
+    swap(&A[i], &A[r]);
+    return i;
 }
 void quick_sort(int A[], int l, int r)
 {
@@ -174,12 +175,18 @@ int main()
             break;
         case 4:
             mergeSort(A, 0, n - 1);
+            break;
         case 5:
             quick_sort(A, 0, n - 1);
-        default:
             break;
+        default:
+            printf("Invalid Input!");
         }
         display(A, n);
+        printf("Do you want to continue? (Y/N):");
+        scanf(" %c", &ch);
+        if (ch == 'N')
+            break;
     } while (1);
     return 0;
 }
