@@ -14,7 +14,7 @@ int interpolation_search();
 int binary_search(int A[], int n, int key)
 {
     int l, u, mid, count, ans;
-    l = 0, u = n - 1, count = 0, ans = A[0];
+    l = 0, u = n - 1, count = 0, ans = -1;
     while (l <= u)
     {
         count++;
@@ -32,6 +32,32 @@ int binary_search(int A[], int n, int key)
     printf("Number of interations executed: %d\n", count);
     return ans;
 }
+int interpolation_search(int A[], int n, int key)
+{
+    int l, u, count, ans;
+    l = 0, u = n - 1, count = 0, ans = -1;
+    while (l <= u && key >= A[l] && key <= A[u])
+    {
+        int pos;
+        count++;
+        if (l == u)
+            pos = l;
+        else
+            pos = l + (((float)(u - l) / (A[u] - A[l])) * (key - A[l]));
+        if (A[pos] == key)
+        {
+            ans = pos;
+            break;
+        }
+        if (A[pos] < key)
+            l = pos + 1;
+        else
+            u = pos - 1;
+    }
+    printf("Number of comparions executed: %d\n", count);
+    return ans;
+}
+
 int main()
 {
     int A[100];
@@ -51,13 +77,18 @@ int main()
         {
         case 1:
             x = binary_search(A, n, key);
-            if (A[x - 1] == key)
+            if (x != -1)
                 printf("Element found at position %d\n", x);
             else
                 printf("Element not found\n");
             break;
         case 2:
-            // interpolation_search();
+            x = interpolation_search(A, n, key);
+            if (x != -1)
+                printf("Element found at position %d\n", x);
+            else
+                printf("Element not found\n");
+            break;
             break;
         default:
             break;
